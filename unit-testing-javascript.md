@@ -11,7 +11,7 @@
 ## What is Automated Testing?
 
 - Code that verifies the code we write, works the way we expect
-- Software is prone to human error
+- Software is prone to **human** error
 - We use code to ensure our software does what we think it will
 - As we change things, it protects us from ourselves in ensuring that we didn't unintentionally break something that already existed
 
@@ -29,12 +29,13 @@
 `src/triple.js`:
 
 ```javascript
-const triple = num => {
+const triple = (num) => {
   return num * 3
 }
 ```
 
 - The "black box" we're testing is that: given a number going into the factory, we expect its triple to come out as the finished product.
+- Focus on/verify the `return` or _side effect_
 
 ---
 
@@ -46,9 +47,9 @@ const triple = num => {
 `src/__tests__/triple.test.js`:
 
 ```javascript
-import triple from '../triple.js'
-describe('tripling a number', () => {
-  it('triples 3 resulting in 9', () => {
+import triple from "../triple.js"
+describe("tripling a number", () => {
+  it("triples 3 resulting in 9", () => {
     expect(triple(3)).toEqual(9)
   })
 })
@@ -61,6 +62,8 @@ describe('tripling a number', () => {
 - Here, we're writing a **unit test**
 - Jest provides us with `describe`, `it`, and `expect` functions
 - Jest is an **open source library** designed to make automated testing easy
+  - Lightweight and easy to configure
+  - Provides scopes, stubs and matchers, and a simple CLI
 
 ---
 
@@ -73,14 +76,70 @@ describe('tripling a number', () => {
 
 ---
 
+## Common Matchers
+
+https://jestjs.io/docs/using-matchers
+
+- .toEqual
+
+```javascript
+expect(triple(3)).toEqual(9)
+```
+
+- .toBe
+
+```javascript
+expect(2 + 2).toBe(4)
+```
+
+- .toHaveProperty
+
+```javascript
+expect(nick).toHaveProperty("firstName")
+```
+
+---
+
+## Common Matchers (cont.)
+
+- .toBeInstanceOf
+
+```javascript
+expect("string").toBeInstanceOf(String)
+```
+
+- .toContain
+
+```javascript
+expect([1, 2, 3]).toContain(2)
+```
+
+- .toBeLessThanOrEqual
+
+```javascript
+expect(array.length).toBeLessThanOrEqual(10)
+```
+
+- .toMatchObject
+
+```javascript
+expect({ title: "Jest", extra: "stuff" }).toMatchObject({ title: "Jest" })
+```
+
+---
+
 ## Let's Write the First Test
 
 `src/__tests__/triple.test.js`:
 
 ```javascript
-import triple from '../triple.js'
-describe('tripling a number', () => {
-  it('triples 3 resulting in 9', () => {
+import triple from "../triple.js"
+
+// Given this function and how integers work,
+// When
+describe("tripling a number", () => {
+  // Then
+  it("triples 3 resulting in 9", () => {
     expect(triple(3)).toEqual(9)
   })
 })
@@ -98,14 +157,14 @@ describe("tripling a number", () => {
   })
 
   it("triples 4 resulting in 12", () => {
-    expect(triple(3).toEqual(12))
+    expect(triple(4).toEqual(12))
   })
 
   it("triples 0 resulting in 0", () => {
     expect(triple(0)).toEqual(0)
   })
 
-  it("triples -3 resulting in -9, () => {
+  it("triples -3 resulting in -9", () => {
     expect(triple(-3)).toEqual(-9)
   })
 })
@@ -116,15 +175,17 @@ describe("tripling a number", () => {
 ## When Writing Tests, Consider:
 
 - Right Results
-- Boundary Cases (negatives, zero, very high numbers, decimals)
+- Boundary or Edge Cases (negatives, zero, very high numbers, decimals)
 - Error Conditions
+
+You want to aim for one of each _type_ of situation
 
 ---
 
 ## What Happens When Our Function is Wrong
 
 ```javascript
-const triple = num => {
+const triple = (num) => {
   return num * 2
 }
 ```
@@ -137,7 +198,7 @@ const triple = num => {
 ## What Happens When We Implement our Function Differently
 
 ```javascript
-const triple = num => {
+const triple = (num) => {
   return num + num + num
 }
 ```
@@ -145,6 +206,16 @@ const triple = num => {
 - Our tests pass!
 - We're still tripling the number, but in a different way
 - The "black box" still works as expected
+
+Our tests allow us to be confident that updates and refactors work.
+
+---
+
+## Guiding Practices
+
+- Unit test primarily only objects and functions
+- Focus on public interfaces
+- Keep tests laser specific
 
 ---
 
@@ -178,8 +249,15 @@ const triple = num => {
 - start with an empty list of scores
 - have a way to register a score
 - has an average score
-- has a lowest score
 
 ---
 
 ## Let's Get Coding!
+
+---
+
+## Some Things to Look At
+
+- before...each
+- debuggers
+- .only
